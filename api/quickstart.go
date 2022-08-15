@@ -1,17 +1,16 @@
-package main
+package api
 
 import (
+	"fmt"
 	"io/ioutil"
 	"log"
 	"net/http"
 )
 
-func main() {
-	MakeRequest()
-}
+const YOUR_ACCESS_TOKEN = "AIzaSyBnpdbchZIlEdQ-8oyS1vs5NORa6b2fXU0"
 
-func MakeRequest() {
-	resp, err := http.Get("https://youtube.googleapis.com/youtube/v3/playlistItems?playlistId=PLjyyS7xnf5wOkhrhWAo4rWLdnpHRBj6ep&key=AIzaSyBnpdbchZIlEdQ-8oyS1vs5NORa6b2fXU0")
+func MakeRequest(playlistId string) string {
+	resp, err := http.Get(fmt.Sprintf("https://youtube.googleapis.com/youtube/v3/playlistItems?playlistId=%s&key=%s", playlistId, YOUR_ACCESS_TOKEN))
 	if err != nil {
 		log.Fatalln(err)
 	}
@@ -22,4 +21,6 @@ func MakeRequest() {
 	}
 
 	log.Println(string(body))
+
+	return string(body)
 }

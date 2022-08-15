@@ -22,6 +22,7 @@ package main
 import (
 	"context"
 	"flag"
+	"fmt"
 	"log"
 	"time"
 
@@ -30,16 +31,18 @@ import (
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
-const (
-	defaultName = "world of KSHZ"
-)
-
-var (
-	addr = flag.String("addr", "localhost:50051", "the address to connect to")
-	name = flag.String("name", defaultName, "Name to greet")
-)
-
 func main() {
+	var defaultName string
+
+	//Inputting varuable of playlistID
+	fmt.Println("Input your playlist Id: ")
+	fmt.Scanln(&defaultName)
+
+	var (
+		addr = flag.String("addr", "localhost:50051", "the address to connect to")
+		name = flag.String("name", defaultName, "Name to greet")
+	)
+
 	flag.Parse()
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
