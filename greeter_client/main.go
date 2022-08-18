@@ -21,6 +21,7 @@ package main
 
 import (
 	"context"
+	"encoding/json"
 	"flag"
 	"fmt"
 	"log"
@@ -31,18 +32,66 @@ import (
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
 )
 
+type RestResponse struct {
+	Kind     string   `json:"kind"`
+	Items    []Items  `json:"items"`
+	Pageinfo PageInfo `json:"pageInfo"`
+}
+
+func (resp *RestResponse) for_print() {
+	fmt.Println("Kind:", resp.Kind)
+	fmt.Println("\n")
+	for i := 0; i < len(resp.Items); i++ {
+		fmt.Println("Item number:", i+1)
+		fmt.Println("ID:", resp.Items[i].Id)
+		fmt.Println("PublishedAt:", resp.Items[i].Snippet.PublishedAt)
+		fmt.Println("Title:", resp.Items[i].Snippet.Title)
+		fmt.Println("Url:", resp.Items[i].Snippet.Thumbnails.Default.Url)
+		fmt.Println("\n")
+	}
+
+	fmt.Println("Number of videos from playlist:", len(resp.Items))
+}
+
+type PageInfo struct {
+	TotalResults int `json:"totalResults"`
+}
+
+type Items struct {
+	Id      string  `json:"id"`
+	Snippet Snippet `json:"snippet"`
+}
+
+type Snippet struct {
+	PublishedAt string     `json:"publishedAt"`
+	Title       string     `json:"title"`
+	Thumbnails  Thumbnails `json:"thumbnails"`
+}
+
+type Thumbnails struct {
+	Default Default `json:"default"`
+}
+
+type Default struct {
+	Url string `json:"url"`
+}
+
 func main() {
 	var defaultName string
 
 	//Inputting varuable of playlistID
 	fmt.Println("Input your playlist Id: ")
-	fmt.Scanln(&defaultName)
-
+	defaultNameAfterErr, err := fmt.Scanln(&defaultName)
+	if err != nil {
+		log.Fatalf("Did not connect: %v", err)
+	} else {
+		fmt.Println("Vot takaya vot fignya: ", defaultNameAfterErr)
+	}
+	fmt.Println("\n")
 	var (
 		addr = flag.String("addr", "localhost:50051", "the address to connect to")
 		name = flag.String("name", defaultName, "Name to greet")
 	)
-
 	flag.Parse()
 	// Set up a connection to the server.
 	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
@@ -50,14 +99,21 @@ func main() {
 		log.Fatalf("did not connect: %v", err)
 	}
 	defer conn.Close()
-	c := pb.NewGreeterClient(conn)
 
 	// Contact the server and print out its response.
+	c := pb.NewGreeterClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
 	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
-	log.Printf("Greeting: %s", r.GetMessage())
+
+	var obj RestResponse
+	err1 := json.Unmarshal([]byte(r.GetMessage()), &obj)
+	if err1 != nil {
+		fmt.Println(err1)
+	} else {
+		obj.for_print()
+	}
 }
