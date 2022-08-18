@@ -81,12 +81,7 @@ func main() {
 
 	//Inputting varuable of playlistID
 	fmt.Println("Input your playlist Id: ")
-	defaultNameAfterErr, err := fmt.Scanln(&defaultName)
-	if err != nil {
-		log.Fatalf("Did not connect: %v", err)
-	} else {
-		fmt.Println("Vot takaya vot fignya: ", defaultNameAfterErr)
-	}
+	fmt.Scanln(&defaultName)
 	fmt.Println("\n")
 	var (
 		addr = flag.String("addr", "localhost:50051", "the address to connect to")
