@@ -17,19 +17,18 @@
  */
 
 // Package main implements a client for Greeter service.
-package main
+package greeter_client
 
 import (
 	"context"
 	"encoding/json"
 	"flag"
 	"fmt"
-	"log"
-	"time"
-
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
+	"log"
+	"time"
 )
 
 type RestResponse struct {
@@ -76,20 +75,21 @@ type Default struct {
 	Url string `json:"url"`
 }
 
-func main() {
-	var defaultName string
+func Do_deal(defaultName string) RestResponse {
+	//var
 
 	//Inputting varuable of playlistID
-	fmt.Println("Input your playlist Id: ")
-	fmt.Scanln(&defaultName)
-	fmt.Println("\n")
+	//fmt.Println("Input your playlist Id: ")
+	//fmt.Scanln(&defaultName)
+	//fmt.Println("\n")
+
 	var (
-		addr = flag.String("addr", "localhost:50051", "the address to connect to")
-		name = flag.String("name", defaultName, "Name to greet")
+	//addr = flag.String("addr", "localhost:50051", "the address to connect to")
+	//name = flag.String("name", defaultName, "Name to greet")
 	)
 	flag.Parse()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial(*addr, grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
@@ -99,7 +99,7 @@ func main() {
 	c := pb.NewGreeterClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: *name})
+	r, err := c.SayHello(ctx, &pb.HelloRequest{Name: defaultName})
 	if err != nil {
 		log.Fatalf("could not greet: %v", err)
 	}
@@ -111,4 +111,5 @@ func main() {
 	} else {
 		obj.for_print()
 	}
+	return obj
 }
