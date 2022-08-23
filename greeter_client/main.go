@@ -37,19 +37,28 @@ type RestResponse struct {
 	Pageinfo PageInfo `json:"pageInfo"`
 }
 
-func (resp *RestResponse) for_print() {
-	fmt.Println("Kind:", resp.Kind)
-	fmt.Println("\n")
+func (resp *RestResponse) for_print() string {
+	//var allInclusive string
+	var alterString string
+	alterString = fmt.Sprintf("Kind: %s<br>", resp.Kind)
+	//allInclusive = "Kind: " + resp.Kind + "\n\n"
+	//fmt.Println("Kind:", resp.Kind)
+	//fmt.Println("\n")
 	for i := 0; i < len(resp.Items); i++ {
-		fmt.Println("Item number:", i+1)
+		/*fmt.Println("Item number:", i+1)
 		fmt.Println("ID:", resp.Items[i].Id)
 		fmt.Println("PublishedAt:", resp.Items[i].Snippet.PublishedAt)
 		fmt.Println("Title:", resp.Items[i].Snippet.Title)
 		fmt.Println("Url:", resp.Items[i].Snippet.Thumbnails.Default.Url)
-		fmt.Println("\n")
+		fmt.Println("\n")*/
+		alterString += fmt.Sprintf("Item number: %v\n<br>", (i + 1))
+		//fmt.Println(alterString)
+		//allInclusive += "Item number: " + string(i+1) + "\n" + "ID: " + resp.Items[i].Id + "\n" + "PublishedAt: " + resp.Items[i].Snippet.PublishedAt + "\n\n" + "Title:" + resp.Items[i].Snippet.Title + "\n" + "Url:" + resp.Items[i].Snippet.Thumbnails.Default.Url + "\n\n"
 	}
-
-	fmt.Println("Number of videos from playlist:", len(resp.Items))
+	fmt.Println(alterString)
+	//fmt.Println("Number of videos from playlist:", len(resp.Items))
+	//allInclusive += "Number of videos from playlist:" + string(len(resp.Items))
+	return alterString
 }
 
 type PageInfo struct {
@@ -108,8 +117,6 @@ func Do_deal(defaultName string) RestResponse {
 	err1 := json.Unmarshal([]byte(r.GetMessage()), &obj)
 	if err1 != nil {
 		fmt.Println(err1)
-	} else {
-		obj.for_print()
 	}
 	return obj
 }

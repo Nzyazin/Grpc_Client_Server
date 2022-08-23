@@ -16,32 +16,38 @@ func create(w http.ResponseWriter, r *http.Request) {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("./index.html", "./header.html", "footer.html")
+	tmpl, err := template.ParseFiles("./index.html", "./header.html", "./footer.html")
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
 	tmpl.ExecuteTemplate(w, "index", nil)
 }
 
-func save_article(w http.ResponseWriter, r *http.Request) {
+func saveArticle(w http.ResponseWriter, r *http.Request) {
+	//const templ = `{{range .Items}}----------------------------
+	//ID: {{ .Id}}`
+	//t := template.Must(template.New("").Parse(templ))
+	tmpl, err := template.ParseFiles("./save_article.html", "./header.html", "./footer.html")
+	if err != nil {
+		fmt.Fprintf(w, err.Error())
+	}
 	title := r.FormValue("title")
-	greeter_client.Do_deal(title)
-
+	Data := greeter_client.Do_deal(title)
+	//fmt.Fprintf(w, data.Kind)
+	//fmt.Println(Data)
 	if title == "" {
 		fmt.Fprintf(w, "What gonna being wrong!")
-	} else {
-		http.Redirect(w, r, "/", http.StatusSeeOther)
 	}
+	tmpl.ExecuteTemplate(w, "save_article", Data)
 }
 
 func handleFunc() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/create", create)
-	http.HandleFunc("/save_article", save_article)
+	http.HandleFunc("/save_article", saveArticle)
 	http.ListenAndServe("localhost:8080", nil)
 }
 
 func main() {
 	handleFunc()
-
 }
