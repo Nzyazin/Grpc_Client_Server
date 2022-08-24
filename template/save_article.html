@@ -1,13 +1,12 @@
 {{ define "save_article" }}
 
 {{ template "header" }}
-<main role="main" class="inner cover">
-    <h1 class="cover-heading1">Data of youtube playlist</h1>
-    <p class="lead1" id="lead1id">Kind: {{ .Kind }}</p>
-    <p class="lead">Total results: {{ .Pageinfo.TotalResults }}</p>
+<main style="text-align: left; max-width: 660px" role="main" class="inner cover">
+    <h1 style="color:red" class="cover-heading1">Data of youtube playlist</h1>
+    <p style="font-size: 23px" class="lead1" id="lead1id">Kind: {{ .Kind }}. Total results: {{ .Pageinfo.TotalResults }}</p>
     <p class="lead">{{range $index1, $Data := .Items }}</p>
-    <p class="lead1">Item number: {{add $index1 1}}</p>
-    <p class="lead">ID: {{ .Id }}</p>
+    <p style="font-size: 21px" class="lead1">Item number: {{add $index1 1}}</p>
+    <p style="font-size: 18px"class="lead">ID: {{ .Id }}</p>
     <p class="lead">PublishedAt: {{ .Snippet.PublishedAt }}</p>
     <p class="lead">Title: {{ .Snippet.Title }}</p>
     <p clas="lead">Url: {{ .Snippet.Thumbnails.Default.Url }}</p>

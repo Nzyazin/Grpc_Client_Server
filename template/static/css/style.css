@@ -1,9 +1,4 @@
-.lead1 {
-    text-align: left;
-    background-color: blueviolet;
-    size: A4;
-}
-
 .cover-heading1 {
-    background-color: chartreuse;
+    font-size: 1em;
+    background-color: blueviolet;
 }
