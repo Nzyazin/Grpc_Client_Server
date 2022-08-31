@@ -24,11 +24,12 @@ import (
 	"encoding/json"
 	"flag"
 	"fmt"
+	"log"
+	"time"
+
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
 	pb "google.golang.org/grpc/examples/helloworld/helloworld"
-	"log"
-	"time"
 )
 
 type RestResponse struct {
@@ -98,7 +99,7 @@ func Do_deal(defaultName string) RestResponse {
 	)
 	flag.Parse()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial("localhost:50051", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("0.0.0.0:50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
