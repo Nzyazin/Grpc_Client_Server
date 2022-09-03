@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  server:
+    image: 'server'
+    container_name: server
+    build:
+      context: .
+      dockerfile: Dockerfile_server
+    command: sh -c "go mod download; go run ./greeter_server/main.go"
+    restart: always
+    working_dir: /
+    tty: true
+    networks:
+      - net
+
+  client:
+    image: 'client'
+    container_name: client
+    build:
+      context: .
+      dockerfile: Dockerfile_client
+    command: sh -c "cd template; go mod download; go run main.go;"
+    working_dir: /
+    ports:
+      - "8080:8080"
+    networks:
+      - net
+
+networks:
+  net:
+    driver: bridge

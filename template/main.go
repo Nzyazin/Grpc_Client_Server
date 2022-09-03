@@ -16,11 +16,6 @@ func create(w http.ResponseWriter, r *http.Request) {
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
-	//tmpl, err := template.ParseFiles("grpc_server/template/index.html", "grpc_server/template/header.html", "grpc_server/template/footer.html")
-	/*wd, err := os.Getwd()
-	if err != nil {
-		log.Fatal(err)
-	}*/
 	tmpl, err := template.ParseFiles("./index.html", "./header.html", "./footer.html")
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
