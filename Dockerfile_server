@@ -6,7 +6,7 @@ WORKDIR /src
 RUN go mod download
 RUN go build -o grpc_server ./greeter_server/main.go
 
-FROM alpine:latest AS server
+FROM alpine:latest AS baza
 COPY --from=builder /src/grpc_server /usr/local/bin/grpc_server
 
 EXPOSE 50052

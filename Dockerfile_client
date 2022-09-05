@@ -6,7 +6,7 @@ WORKDIR /src
 RUN go mod download
 RUN go build -o grpc_client ./template/main.go
 
-FROM alpine:latest AS client
+FROM alpine:latest AS clientbaza
 COPY ./ ./
 WORKDIR /template
 COPY --from=build /src/grpc_client /usr/local/bin/grpc_client

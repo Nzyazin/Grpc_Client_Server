@@ -47,7 +47,7 @@ func handleFunc() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/create", create)
 	http.HandleFunc("/save_article", saveArticle)
-	http.ListenAndServe("0.0.0.0:8080", nil)
+	http.ListenAndServe(":8080", nil)
 }
 
 func main() {

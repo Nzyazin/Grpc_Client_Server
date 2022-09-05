@@ -7,7 +7,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_server
-    command: sh -c "go mod download; go run ./greeter_server/main.go"
+      target: baza
+    #command: sh -c "go mod download; go run ./greeter_server/main.go"
     restart: always
     working_dir: /
     tty: true
@@ -20,8 +21,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile_client
-    command: sh -c "cd template; go mod download; go run main.go;"
-    working_dir: /
+      target: clientbaza
+    #command: sh -c "cd template; go mod download; go run main.go;"
+    restart: always
+    working_dir: /template
     ports:
       - "8080:8080"
     networks:
