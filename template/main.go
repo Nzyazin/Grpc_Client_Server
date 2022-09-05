@@ -8,7 +8,7 @@ import (
 )
 
 func create(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("./create.html", "./header.html", "footer.html")
+	tmpl, err := template.ParseFiles("./create.html", "./header.html", "./footer.html")
 	if err != nil {
 		fmt.Fprintf(w, err.Error())
 	}
@@ -47,7 +47,7 @@ func handleFunc() {
 	http.HandleFunc("/", index)
 	http.HandleFunc("/create", create)
 	http.HandleFunc("/save_article", saveArticle)
-	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe("0.0.0.0:8080", nil)
 }
 
 func main() {

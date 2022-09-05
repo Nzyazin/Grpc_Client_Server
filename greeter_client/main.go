@@ -46,7 +46,7 @@ func Do_deal(defaultName string) RestResponse {
 
 	flag.Parse()
 	// Set up a connection to the server.
-	conn, err := grpc.Dial("server:50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
+	conn, err := grpc.Dial("172.17.0.2:50052", grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		log.Fatalf("did not connect: %v", err)
 	}
